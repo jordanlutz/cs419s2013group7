@@ -1,8 +1,8 @@
-  <?php 
+    <?php 
 	
 	include "sqliConnect.php";
 	
-	connect();
+	$mysqli = connect();
 	printf ( "Successfully connected to database!\n");
 	$sql = "create table ACCESSPOINT( 
 		pointID int not null auto_increment, 
