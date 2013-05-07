@@ -1,48 +1,47 @@
-<?
-
-	include "sqliConnect.php";
-       
-    $mysqli = connect();
+<?php
 	
-	printf("Successfully connected to database!\n");
+	if(isset($_POST["data"])){
+		//echo $_POST["data"];
 	
-	//Turns retrieved JSON object into an associative array
-	$post_data = json_decode($_POST['json_post'], TRUE);
+		include "sqliConnect.php";
+		$mysqli = connect();
 	
-		$BSSID_post = $post_data['BSSID'];
-		$latitude_post = $post_data['latitude'];
-		$longitude_post = $post_data['longitude'];
-		$altitude_post = $post_data['altitude'];
-		$additionalInfo_post = $post_data['additionalInfo'];
+		$JSONArray = json_decode($_POST["data"], TRUE); //returns null if not decoded
 	
-	//Check to see if BSSID already in database
-	if(isInDatabase($BSSID_post) === TRUE){ //This function to be written next week
-		echo "BSSID already in database\n";
-	}
-	else{ 
-		$sql = "INSERT INTO ACCESSPOINT(
-					pointID,
-					BSSID,
-					latitude,
-					longitude,
-					altitude,
-					additionalInfo)
-					VALUES(
-					'$BSSID_post', 
-					'$latitude_post',
-					'$longitude_post',
-					'$altitude_post',
-					'$additionalInfo_post'
-					)";
-		if($mysqli->query($sql) === TRUE){
-			printf("Insert Successful\n");
+		if($JSONArray != null){ 
+			$BSSID = $JSONArray["BSSID"];
+			$latitude = $JSONArray["latitude"];
+			$longitude = $JSONArray["longitude"];
+			$altitude = $JSONArray["altitude"];
+			$additionalInfo = $JSONArray["additionalInfo"];
+			//echo $BSSID;
 		}
 		else{
-			printf("Insert Failed\n");
+			echo "Error in code\n";
 		}
+		
+		$sql = "SELECT * FROM ACCESSPOINT";
+		$result = $mysqli->query($sql);
+		
+		$uniqueBSSID = true;
+        while($r = mysqli_fetch_assoc($result)){
+			if($r["BSSID"] == $BSSID){
+				$uniqueBSSID = false;
+				break;
+			}
+        }
+			
+		if($uniqueBSSID == true){
+			echo "Unique";
+				$sql = "INSERT INTO ACCESSPOINT(BSSID, latitude, longitude, altitude, additionalInfo)
+				VALUES ('$BSSID', '$latitude', '$longitude', '$altitude', '$additionalInfo')";
+				$mysqli->query($sql);
+		}
+		else{
+			echo "Not Unique";
+		}
+		
+		$mysqli->close();
+		
 	}
-       
-        printf ("close connection\n");
-        $mysqli->close();
-
 ?>
