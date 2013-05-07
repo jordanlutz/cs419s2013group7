@@ -29,7 +29,7 @@
 		$.ajax({
 			type:"GET",
             dataType:"json",
-            url:"getAccessPoint2.php",
+            url:"getAccessPoint.php",
             success:function(items) {
 						for (var i = 0; i < items.length; i++) {
 							var item = items[i];
