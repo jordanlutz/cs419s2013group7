@@ -3,7 +3,7 @@
 <head>
 <title>Wifi Project</title>
 <script src = "jquery.js"></script>
-<link rel = "stylesheet" type = "text/css" href = "wifiindex.css">
+<link rel = "stylesheet" type = "text/css" href = "mainpage.css">
 </head>
 <body id = "bodyWrapper">
 
