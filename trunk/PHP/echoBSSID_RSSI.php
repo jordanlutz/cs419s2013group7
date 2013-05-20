@@ -1,10 +1,6 @@
 <?php
 
-	$obj = json_decode($HTTP_RAW_POST_DATA);
-	$BSSID = $obj->{'BSSID'};
-	$RSSI = $obj->{'RSSI'};
-
-	echo "BSSID: ".$BSSID.", ";
-	echo "RSSI: ".$RSSI;
+	$array = $HTTP_RAW_POST_DATA;
+	print_r(json_decode($array, true));
 
 ?>
