@@ -1,0 +1,62 @@
+#bodyWrapper{
+	background: #282828;
+}
+
+#findCurrentLocation{
+	position: fixed;
+    left: 50%;
+    top: 50%;
+    height: 300px;
+    margin-top: -300px;
+    width: 600px;
+    margin-left: -300px;
+	border: 2px solid black;
+	background: orange;
+	border-radius: 10px;
+}
+
+#findCurrentLocation:active{
+	
+}
+
+#findCurrentLocation:hover{
+	cursor: pointer;
+	
+}
+
+
+
+#addPoint{
+	position: fixed;
+	left: 75%;
+	top: 75%;
+	height: 100px;
+	width: 600px;
+	margin-top: -100px;
+	margin-left: -641px;
+	border: 2px solid black;
+	background: orange;
+	border-radius: 10px;
+}
+#addPoint:hover{
+	cursor: pointer;
+
+}
+#addPoint:active{
+
+
+
+}
+
+#textDiv1{
+	font: bold 36px Verdana;
+	text-align: center;
+	vertical-align: middle;
+}
+
+#textDiv2{
+	font: bold 24px Verdana;
+	text-align: center;
+	vertical-align: middle;
+	
+}

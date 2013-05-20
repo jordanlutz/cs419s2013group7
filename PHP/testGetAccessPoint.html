@@ -1,0 +1,43 @@
+<html>
+
+<head>
+<title>Test getAccessPoint</title>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script>
+	function addItem(pointID, BSSID, latitude, longitude, altitude, additionalInfo) {
+		var loc = $("#allitems");
+		loc.append($("<p />").text(pointID));
+		loc.append($("<p />").text(BSSID));
+		loc.append($("<p />").text(latitude));
+		loc.append($("<p />").text(longitude));
+		loc.append($("<p />").text(altitude));
+		loc.append($("<p />").text(additionalInfo));
+		loc.append("<br/>");
+	}
+
+	$.ajax({
+		type:"GET",
+		dataType:"json",
+		url:"getAccessPoint.php",
+		success:function(items) {
+			for (var i = 0; i < items.length; i++) {
+				var item = items[i];
+				addItem(item.pointID, item.BSSID, item.latitude, item.longitude, item.altitude, item.additionalInfo);
+			}
+			$("#allitems").listview('refresh');
+		},
+		error:function(a,b,c) {
+			alert("ERROR: "+a);
+		}
+	});
+	</script>
+</head>
+
+<body>
+	<div data-role="content" class="APList">	
+		<ul data-role="listview" data-inset="true" id="allitems"></ul>
+	</div>
+</body>
+
+
+</html>
