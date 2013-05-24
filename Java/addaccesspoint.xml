@@ -3,6 +3,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
+
+    <Button
+        android:id="@+id/addPoint"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Point" />
+
+    <Button
+        android:id="@+id/checkLocation"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Check Current Geolocation" />
+
+    <TextView
+        android:id="@+id/currentLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Current Location"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/strongestBSSID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Current Strongest BSSID"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/checkDatabase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New or Previously Entered"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </LinearLayout>
