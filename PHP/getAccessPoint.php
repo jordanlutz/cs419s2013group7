@@ -1,22 +1,23 @@
 <?php 
 	include "sqliConnect.php";
-	
-	$mysqli = connect();
+	function getAccessPoints($BSSID){
+		$mysqli = connect();
+			
+		$sql = "SELECT * FROM ACCESSPOINT WHERE BSSID=".$BSSID."";
+
+		$result = $mysqli->query($sql);
+
+		$rows = array();
+
+		while($r = mysqli_fetch_assoc($result)) {
+			$rows[] = $r;
+		}
+
+		$data = json_encode($rows);
 		
-	$sql = "SELECT * FROM ACCESSPOINT";
-
-	$result = $mysqli->query($sql);
-
-	$rows = array();
-
-	while($r = mysqli_fetch_assoc($result)) {
-		$rows[] = $r;
+		return $data;
+		
+		$mysqli->close();
 	}
-
-	$data = json_encode($rows);
-	
-	print $data;
-	
-	$mysqli->close();
 
 ?>
