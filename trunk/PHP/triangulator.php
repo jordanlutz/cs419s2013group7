@@ -15,7 +15,7 @@
 			$ap_array = array();
 
 			$j = 0;
-			for ($i = 0; $i <= 10; $i++) {	
+			for ($i = 0; $i < count($json_array); $i++) {	
 				echo "test"+$i;
 				$BSSID = $json_array["BSSID"];
 				$result = getAccessPoint($BSSID);
