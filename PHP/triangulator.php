@@ -7,14 +7,13 @@
 	if ($json_array != null) {
 		
 		if ($json_array["addFlag"] == "1") {
-			echo "test2";//TODO
+			//TODO
 		} 
 		else {
 			$ap_array = array();
 
 			$j = 0;
-			for ($i = 0; $i < count($json_array); $i++) {	
-				echo "test"+$i;
+			for ($i = 0; $i < count($json_array); $i++) {
 				$BSSID = $json_array["BSSID"];
 				$result = getAccessPoint($BSSID);
 				if ($result != null) {
