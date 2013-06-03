@@ -1,6 +1,4 @@
 <?php
-	echo "test";
-
 	include "getAccessPoint.php";
 	
 	$raw_array = $HTTP_RAW_POST_DATA;
