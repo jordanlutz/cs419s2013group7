@@ -1,4 +1,5 @@
 <?php 
+	//echo "test";
 	include "sqliConnect.php";
 	function getAccessPoint($BSSID){
 		$mysqli = connect();
