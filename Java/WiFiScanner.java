@@ -7,6 +7,9 @@ import android.os.StrictMode;
 import android.app.Activity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.content.Context;
@@ -28,22 +31,57 @@ import org.json.JSONObject;
 
 public class WiFiScanner extends Activity {
 
-	JSONArray jsonArray = new JSONArray();
+	Button getLocation;
+	Button addAP;
+
+	TextView apResults;
+	TextView locationResult;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+		setContentView(R.layout.activity_main);
+
 		// Bypass thread policy for network activities
 		if (android.os.Build.VERSION.SDK_INT > 9) {
 			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 			StrictMode.setThreadPolicy(policy);
 		}
-		
-		getWifiInfo();
-			
-		String result = httpPostWithJson("http://web.engr.oregonstate.edu/~lutzjo/cs419/echoBSSID_RSSI.php", jsonArray);
-		Log.d("Server Result: ", result);
+
+		getLocation = (Button) findViewById(R.id.getLocation);
+		addAP = (Button) findViewById(R.id.addAP);
+
+		apResults = (TextView) findViewById(R.id.apResults);
+		locationResult = (TextView) findViewById(R.id.locationResult);
+
+		getLocation.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				JSONArray accessPoints = new JSONArray();
+				String result;
+				String addFlag = "0";
+				
+				accessPoints = getWifiInfo(addFlag);
+				result = httpPostWithJson("http://web.engr.oregonstate.edu/~lutzjo/cs419/triangulator.php", accessPoints);
+				locationResult.setText(result);
+			}
+		});
+
+		addAP.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				JSONArray accessPoints = new JSONArray();
+				String result;
+				String addFlag = "1";
+
+				accessPoints = getWifiInfo(addFlag);
+				result = httpPostWithJson("http://web.engr.oregonstate.edu/~lutzjo/cs419/triangulator.php", accessPoints);
+				locationResult.setText(result);
+			}
+		});
+
 	}
 
 	@Override
@@ -53,47 +91,58 @@ public class WiFiScanner extends Activity {
 		return true;
 	}
 
-	private void getWifiInfo() {
-		
+	private JSONArray getWifiInfo(String addFlag) {
+
 		List<ScanResult> results;
 		int size;
+		String resultText = "";
+		JSONObject jsonFlag = new JSONObject();
+		JSONArray jsonArray = new JSONArray();
+
+		try {
+			jsonFlag.put("addFlag", addFlag);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		jsonArray.put(jsonFlag);
 
 		WifiManager wifi = (WifiManager) getBaseContext().getSystemService(Context.WIFI_SERVICE);
-		
+
 		results = wifi.getScanResults();
 		size = results.size() - 1;
-		
+
 		while (size >= 0) {
 			String ssid = results.get(size).SSID;
 			String bssid = results.get(size).BSSID;
 			String rssi = String.valueOf(results.get(size).level);
-			
-			System.out.println("----------");
-			System.out.println("AP #" + size + ": ");
-			Log.d("SSID: ", ssid);
-			Log.d("BSSID: ", bssid);
-			Log.d("RSSI: ", rssi);
-			
+
+			if (addFlag.equals("0")) {
+				resultText = resultText.concat("\n----------\nAP #" + size + ":" + "\nSSID: " + ssid + "\nBSSID: " + bssid + "\nRSSI: " + rssi);
+			}
+
 			JSONObject json = new JSONObject();
-			
+
 			try {
 				json.put("SSID", ssid);
 				json.put("BSSID", bssid);
 				json.put("RSSI", rssi);
 				jsonArray.put(json);
-			} catch (JSONException e) {
-				e.printStackTrace();
+			} catch (JSONException e1) {
+				e1.printStackTrace();
 			}
-			
+
 			size--;
 		}
 
-		return;
+		if (addFlag.equals("0")) {
+			apResults.setText(resultText);
+		}
+		return jsonArray;
 	}
 
 	private String httpPostWithJson(String url, JSONArray jsonArray) {
 		String result = null;
-		
+
 		try {
 			HttpPost httppost = new HttpPost(url);
 
