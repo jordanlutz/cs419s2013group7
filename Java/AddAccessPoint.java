@@ -60,12 +60,10 @@ public class AddAccessPoint extends Activity implements OnClickListener {
 
 	Button addPoint;
 	Button checkLocation;
-	Button testButton;
 	
 	TextView currentLocation;
 	TextView strongestBSSID;
 	TextView checkDatabase;
-	TextView testText;
 
 	String rssi = "";
 	String bssid = "";
@@ -74,7 +72,7 @@ public class AddAccessPoint extends Activity implements OnClickListener {
 	String lonString = "";
 
 	String getRequestString = "http://web.engr.oregonstate.edu/~cooneyj/CS419/testget.php?checkBSSID"; //This works
-	String postRequestString = "http://web.engr.oregonstate.edu/~cooneyj/CS419/testpost.php"; //Needs to be tested
+	String postRequestString = "http://web.engr.oregonstate.edu/~cooneyj/CS419/testpost.php"; //Also Works
 
 	double latitude = 0.0;
 	double longitude = 0.0;
@@ -90,18 +88,15 @@ public class AddAccessPoint extends Activity implements OnClickListener {
 
 		addPoint = (Button) findViewById(R.id.addPoint);
 		checkLocation = (Button) findViewById(R.id.checkLocation);
-		testButton = (Button) findViewById(R.id.testButton);
 
 		currentLocation = (TextView) findViewById(R.id.currentLocation);
 		strongestBSSID = (TextView) findViewById(R.id.strongestBSSID);
 		checkDatabase = (TextView) findViewById(R.id.checkDatabase);
-		testText = (TextView) findViewById(R.id.testText);
 
 		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 		addPoint.setOnClickListener(this);
 		checkLocation.setOnClickListener(this);
-		testButton.setOnClickListener(this);
 	}
 
 	public void onClick(View v) {
@@ -110,8 +105,8 @@ public class AddAccessPoint extends Activity implements OnClickListener {
 
 		//This will add the current location to the database
 		if (viewId == R.id.addPoint) {
-			location = getLocation(); //Finds current location returns string of current location
-			currentLocation.setText(location); //Sets UI text to current location coordinates
+			//location = getLocation(); //Finds current location returns string of current location
+			//currentLocation.setText(location); //Sets UI text to current location coordinates
 			postStrongestRSSI(true); //Set to true so that it will be put in database if able
 		}
 		else if (viewId == R.id.currentLocation){
@@ -119,15 +114,12 @@ public class AddAccessPoint extends Activity implements OnClickListener {
 			currentLocation.setText(location);
 			postStrongestRSSI(false);
 		}
-		else if(viewId == R.id.testButton){
-			String result = getRequest();
-			testText.setText(result);
-		}
 	}
 	
 	private void postStrongestRSSI(boolean putInDatabase) {
 		JSONObject json = new JSONObject();
-		int rssiInt = -1000;
+		
+		int rssiInt = -1000; //Set to value lower than any found in RSSI
 		int size;
 		List<ScanResult> results;
 		WifiManager wifi = (WifiManager) getBaseContext().getSystemService(Context.WIFI_SERVICE);
@@ -160,8 +152,7 @@ public class AddAccessPoint extends Activity implements OnClickListener {
 				rssi = String.valueOf(rssiInt);
 				latString = String.valueOf(latitude);
 				lonString = String.valueOf(longitude);
-
-				//These are the five variables to be added to the database
+				
 				json.put("SSID", ssid);
 				json.put("BSSID", bssid);
 				json.put("RSSI", rssi);
@@ -231,7 +222,6 @@ public class AddAccessPoint extends Activity implements OnClickListener {
 		String getResult;
 		int rssiInt = -1000;
 		int size;
-		
 		WifiManager wifi = (WifiManager) getBaseContext().getSystemService(Context.WIFI_SERVICE);
 		results = wifi.getScanResults();
 		size = results.size() - 1;
@@ -246,7 +236,6 @@ public class AddAccessPoint extends Activity implements OnClickListener {
 
 		rssi = String.valueOf(rssiInt);
 		getResult = getRequest();
-		System.out.println(getResult);
 
 		if (getResult.contains(bssid)) {
 			return false;
