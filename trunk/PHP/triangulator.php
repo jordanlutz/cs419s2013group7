@@ -17,6 +17,8 @@
 					$ap_array[$j] = array();
 					$ap_array[$j]['BSSID'] = $BSSID;
 					$ap_array[$j]['SSID'] = $json_array[$i]['SSID'];
+					$ap_array[$j]['latitude'] = $json_array[$i]['latitude'];
+					$ap_array[$j]['longitude'] = $json_array[$i]['longitude'];
 					$j++;
 				}
 			}
@@ -92,7 +94,7 @@
 		$location[0]['latitude'] = $estLat;
 		$location[0]['longitude'] = $estLong;
 
-		return $location;
+		return json_encode($location);
 	}
 	
 ?>
