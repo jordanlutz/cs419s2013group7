@@ -18,7 +18,7 @@
 	function insertAccessPoint($data) {
 		$mysqli = connect();
 			
-		$sql = "INSERT INTO ACCESSPOINT (BSSID) VALUES ('".$data['BSSID']."')";
+		$sql = "INSERT INTO ACCESSPOINT (BSSID, latitude, longitude) VALUES ('".$data['BSSID']."', '".$data['latitude']."', '".$data['longitude']."')";
 
 		$result = $mysqli->query($sql);
 	
