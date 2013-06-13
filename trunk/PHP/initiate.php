@@ -7,10 +7,10 @@
 	$sql = "create table ACCESSPOINT( 
 		pointID int not null auto_increment, 
 		BSSID varchar(255) not null, 
-		latitude Double not null, 
-		longitude Double not null, 
-		altitude Double not null, 
-		additionalInfo varchar(255) not null, 
+		latitude varchar(255), 
+		longitude varchar(255), 
+		altitude varchar(255), 
+		additionalInfo varchar(255), 
 		primary key (pointID))";
 	
 	if( $mysqli->query($sql) === TRUE){
